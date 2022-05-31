@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { TodoList } from './components'
 
 export function App() {
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useState(
+    () => JSON.parse(window.localStorage.getItem('todos')) || []
+  )
   const todoTaskRef = useRef()
+
+  useEffect(() => {
+    window.localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   const toggleTodo = (id) => {
     const newTodos = [...todos]
